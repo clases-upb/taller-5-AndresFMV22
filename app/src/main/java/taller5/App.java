@@ -8,6 +8,10 @@ public class App {
     public static void main(String[] args) {
         
         try {
+            System.out.println(numero_aleatorio(0));
+            System.out.println(simular_ventas());
+            System.out.println(Calcular_empaque(100));
+            System.out.println(Jugar_21(3));
             
         } 
         
@@ -25,6 +29,52 @@ public class App {
         
     
     */ 
+    
+    public static int numero_aleatorio(int numero) {
+        try {
+
+        final int lim_inf = 1000; 
+        final int lim_sup = 9999;
+ 
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Ingrese un número entero positivo entre 1000 y 9999: ");
+
+        int numero_usuario = scanner.nextInt();
+
+        if (numero_usuario < lim_inf || numero_usuario > lim_sup) {
+            System.out.println("El número ingresado no está en el rango que se permite.");
+            return -1; 
+        }
+
+        Random random = new Random();
+        int intentos = 0;
+        boolean encontrado = false;
+
+    
+        for (int alea = 0; !encontrado; alea ++) {
+           
+            for (int num = 0; num < 1; num ++) { 
+                int numero_aleatorio = random.nextInt(lim_sup - lim_inf + 1) + lim_inf;
+                intentos++;
+
+                if (numero_aleatorio == numero_usuario) {
+                    encontrado = true;
+                }
+            }
+        }
+
+        System.out.println("Se encontró el número exactamente en " + intentos + " intentos.");
+        return numero_usuario; 
+    
+            
+        } 
+        
+        catch (Exception e) {
+            return -1; 
+        }
+    }
+    
+       
 
 
 
@@ -61,6 +111,42 @@ public class App {
         
       
     */
+    public static String simular_ventas() {
+            try {
+                final int año_entero = 12;
+                Random random = new Random();
+                DecimalFormat pesos = new DecimalFormat("$#,###.00");
+                String resultado = "";
+                double total_ventas_año = 0;
+        
+               
+                    for (int año = 1; año <= 3; año++) {
+                        resultado += "Año " + año + "\n";
+                        
+        
+                        for (int mes = 1; mes <= año_entero; mes++) {
+                          
+                            double ventas_mes = 10000 + (random.nextDouble() * (10000000 - 1000));
+                            total_ventas_año += ventas_mes;
+        
+                            resultado += "Ventas Mes " + mes + ": " + pesos.format(ventas_mes) + "\n";
+                        }
+        
+                        resultado += "Total ventas Año " + año + ": " + pesos.format(total_ventas_año) + "\n\n";
+                    }
+              
+        
+                return resultado;
+            }
+                
+            catch (Exception e) {
+                return "Ocurrio un error inesperado"; 
+            }
+        }
+        
+
+        
+
 
     
 
@@ -85,6 +171,55 @@ public class App {
 
 
     */
+ public static String Calcular_empaque(int bombillas) {
+        try {
+
+        int cajas_por_pallets = 16;
+        int bombillas_por_caja = 30;
+        int cajas_necesarias = bombillas / bombillas_por_caja;
+        int pallets_necesarios = 0;
+        int caja_actual = 1;
+    
+        if (bombillas % bombillas_por_caja != 0) {
+            cajas_necesarias++;
+        }
+    
+        String resultado = "Para " + bombillas + " bombillas, se necesitan " + cajas_necesarias + " cajas. \n";
+    
+      
+        for (int inicio = 1; caja_actual <= cajas_necesarias; inicio++) {
+            if (cajas_necesarias > 0) {
+                pallets_necesarios ++;
+                resultado += "Pallet " + inicio + " --> ";
+                for (int inicio1 = 1; inicio1 <= cajas_por_pallets; inicio1 ++) {
+                    if (caja_actual <= cajas_necesarias) {
+                        resultado += "Caja " + caja_actual;
+                        caja_actual++;
+                        if (inicio1 < cajas_por_pallets && caja_actual <= cajas_necesarias) {
+                            resultado += ", ";
+                        }
+                    }
+                }
+                resultado += "\n";
+            }
+        }
+    
+        int bombillas_sin_empacar = bombillas - (cajas_necesarias - 1) * bombillas_por_caja;
+        if (bombillas_sin_empacar  > bombillas_por_caja) {
+            bombillas_sin_empacar  = bombillas_por_caja;
+        }
+    
+        resultado += "Se quedan " + bombillas_sin_empacar + " bombillas sin empacar.\n";
+    
+        return resultado;
+    
+            
+        }
+        
+        catch (Exception e) {
+            return "Ocurrio un error inesperado";
+        }
+    }
 
 
 
@@ -111,6 +246,47 @@ public class App {
 
 
     */
+  public static int Jugar_21 (int num_cartas){
+           
+            try {
+                Scanner scanner = new Scanner(System.in);
+                int num_jugadores = 0;
+                int puntos = 0;
+                String resultado;
+            
+                for (;;) {
+                    System.out.print("Ingrese la cantidad de jugadores (1-6): ");
+                    num_jugadores = scanner.nextInt();
+                    if (num_jugadores >= 1 && num_jugadores <= 6) {
+                        break;
+                    }
+                    System.out.println("Por favor, ingrese un número válido entre 1 y 6.");
+                }
+            
+                for (int inicial = 1; inicial <= num_jugadores; inicial++) {
+            
+                    for (int cartas = 0; cartas < 3; cartas++) {
+                        puntos += (int) (Math.random() * 10) + 1;
+                    }
+                    if (puntos == 21) {
+                        resultado = "juego perfecto";
+                    } else if (puntos > 21) {
+                        resultado = "se pasó";
+                    } else if (puntos < 21) {
+                        resultado = "faltaron puntos";
+                    } else {
+                        resultado = "no se determinó el resultado";
+                    }
+            
+                    System.out.println("Jugador " + inicial + ", puntos " + puntos + " -- > " + resultado);
+                }
+            
+            } catch (Exception e) {
+                System.out.println("Ocurrió un error inesperado: " + e.getMessage());
+            }
+            return 0; 
+        }
+    }
 
 
 
